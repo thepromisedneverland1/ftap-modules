@@ -44,3 +44,31 @@ if hum and hum.SeatPart and hum.SeatPart.Parent.Name:find("Blobman") then
 else
     warn("You need to be sitting on a Blobman first.")
 end
+```
+
+oh and U can use this on top of the module 
+
+```lua
+local ScriptContext = game:GetService("ScriptContext")
+
+ScriptContext.Error:Connect(function(message, stackTrace, scriptInstance)
+    if message and (string.find(message, "WaitForChild") or string.find(message, "Parent")) then
+        if scriptInstance and (scriptInstance.Name == "LocalCreatureControl" or (scriptInstance.Parent and scriptInstance.Parent.Name == "LocalCreatureControl")) then
+            if scriptInstance.Parent and scriptInstance.Parent.Name == "LocalCreatureControl" then
+                scriptInstance.Parent:Destroy()
+            else
+                scriptInstance:Destroy()
+            end
+            return
+        end
+    end
+    
+    if message and string.find(message, "LocalCreatureControl") then
+        local found = workspace:FindFirstChild("LocalCreatureControl", true)
+        if found then
+            found:Destroy()
+        end
+    end
+end)
+```
+
